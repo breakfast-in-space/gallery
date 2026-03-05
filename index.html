@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — Breakfast in Space</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #0d0d0d;
+      color: #d0d0d0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* --- Header --- */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 48px;
+      background: #0d0d0d;
+      border-bottom: 1px solid #161616;
+    }
+
+    .site-name {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #777;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .site-name:hover { color: #d0d0d0; }
+
+    .page-label {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #333;
+    }
+
+    /* --- Main --- */
+    main { padding-top: 88px; }
+
+    /* --- Filters --- */
+    .filters {
+      display: flex;
+      gap: 40px;
+      padding: 64px 48px 48px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #3a3a3a;
+      cursor: pointer;
+      padding: 0 0 4px;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .filter-btn::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #555;
+      transition: width 0.4s ease;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover { color: #aaa; }
+
+    .filter-btn.active::after { width: 100%; }
+
+    /* --- Gallery --- */
+    .gallery {
+      columns: 3;
+      column-gap: 3px;
+      padding: 0 3px 3px;
+    }
+
+    @media (max-width: 960px) { .gallery { columns: 2; } }
+    @media (max-width: 560px) {
+      .gallery { columns: 1; }
+      .filters { padding: 40px 24px 32px; gap: 24px; }
+      header { padding: 20px 24px; }
+    }
+
+    /* --- Gallery Items --- */
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 3px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .gallery-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+      filter: brightness(0.78);
+      transition: filter 0.7s ease, transform 0.7s ease;
+    }
+
+    .gallery-item:hover img {
+      filter: brightness(1);
+      transform: scale(1.025);
+    }
+
+    /* --- Caption --- */
+    .caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 40px 18px 16px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #999;
+    }
+
+    .gallery-item:hover .caption {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* --- Hidden --- */
+    .gallery-item.hidden { display: none; }
+
+    /* --- Footer --- */
+    footer {
+      padding: 100px 48px 60px;
+      text-align: center;
+    }
+
+    footer a {
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #333;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    footer a:hover { color: #777; }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="https://www.breakfast-in-space.com" class="site-name">Breakfast in Space</a>
+    <span class="page-label">Gallery</span>
+  </header>
+
+  <main>
+
+    <nav class="filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="photography">Photography</button>
+      <button class="filter-btn" data-filter="music">Music</button>
+      <button class="filter-btn" data-filter="visual-art">Visual Art</button>
+      <button class="filter-btn" data-filter="production">Production</button>
+    </nav>
+
+    <div class="gallery">
+
+      <div class="gallery-item" data-collection="photography">
+        <img src="https://picsum.photos/seed/bis1/800/1100" alt="">
+        <div class="caption">Photography</div>
+      </div>
+
+      <div class="gallery-item" data-collection="music">
+        <img src="https://picsum.photos/seed/bis2/800/600" alt="">
+        <div class="caption">Music</div>
+      </div>
+
+      <div class="gallery-item" data-collection="visual-art">
+        <img src="https://picsum.photos/seed/bis3/800/800" alt="">
+        <div class="caption">Visual Art</div>
+      </div>
+
+      <div class="gallery-item" data-collection="photography">
+        <img src="https://picsum.photos/seed/bis4/800/550" alt="">
+        <div class="caption">Photography</div>
+      </div>
+
+      <div class="gallery-item" data-collection="production">
+        <img src="https://picsum.photos/seed/bis5/800/1050" alt="">
+        <div class="caption">Production</div>
+      </div>
+
+      <div class="gallery-item" data-collection="music">
+        <img src="https://picsum.photos/seed/bis6/800/800" alt="">
+        <div class="caption">Music</div>
+      </div>
+
+      <div class="gallery-item" data-collection="visual-art">
+        <img src="https://picsum.photos/seed/bis7/800/1200" alt="">
+        <div class="caption">Visual Art</div>
+      </div>
+
+      <div class="gallery-item" data-collection="photography">
+        <img src="https://picsum.photos/seed/bis8/800/600" alt="">
+        <div class="caption">Photography</div>
+      </div>
+
+      <div class="gallery-item" data-collection="production">
+        <img src="https://picsum.photos/seed/bis9/800/900" alt="">
+        <div class="caption">Production</div>
+      </div>
+
+      <div class="gallery-item" data-collection="music">
+        <img src="https://picsum.photos/seed/bis10/800/700" alt="">
+        <div class="caption">Music</div>
+      </div>
+
+      <div class="gallery-item" data-collection="visual-art">
+        <img src="https://picsum.photos/seed/bis11/800/600" alt="">
+        <div class="caption">Visual Art</div>
+      </div>
+
+      <div class="gallery-item" data-collection="photography">
+        <img src="https://picsum.photos/seed/bis12/800/1000" alt="">
+        <div class="caption">Photography</div>
+      </div>
+
+      <div class="gallery-item" data-collection="music">
+        <img src="https://picsum.photos/seed/bis13/800/650" alt="">
+        <div class="caption">Music</div>
+      </div>
+
+      <div class="gallery-item" data-collection="production">
+        <img src="https://picsum.photos/seed/bis14/800/800" alt="">
+        <div class="caption">Production</div>
+      </div>
+
+      <div class="gallery-item" data-collection="visual-art">
+        <img src="https://picsum.photos/seed/bis15/800/1100" alt="">
+        <div class="caption">Visual Art</div>
+      </div>
+
+      <div class="gallery-item" data-collection="photography">
+        <img src="https://picsum.photos/seed/bis16/800/750" alt="">
+        <div class="caption">Photography</div>
+      </div>
+
+      <div class="gallery-item" data-collection="production">
+        <img src="https://picsum.photos/seed/bis17/800/600" alt="">
+        <div class="caption">Production</div>
+      </div>
+
+      <div class="gallery-item" data-collection="music">
+        <img src="https://picsum.photos/seed/bis18/800/900" alt="">
+        <div class="caption">Music</div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <a href="https://www.breakfast-in-space.com">← Back to Breakfast in Space</a>
+  </footer>
+
+  <script>
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const items = document.querySelectorAll('.gallery-item');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.dataset.filter;
+        items.forEach(item => {
+          if (filter === 'all' || item.dataset.collection === filter) {
+            item.classList.remove('hidden');
+          } else {
+            item.classList.add('hidden');
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
