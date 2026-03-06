@@ -29,6 +29,7 @@
       font-weight: 300;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+      padding-bottom: 72px;
     }
 
     a { text-decoration: none; color: inherit; }
@@ -344,8 +345,11 @@
 
     /* ─── SOUND PLAYER ───────────────────────────────────── */
     .player {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 200;
+      background: var(--bg);
       border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
       padding: 0 52px;
       height: 72px;
       display: flex;
@@ -421,50 +425,94 @@
       flex-shrink: 0;
     }
 
-    /* ─── LIGHTBOX ───────────────────────────────────────── */
-    .lb {
+    /* ─── VIEWER ─────────────────────────────────────────── */
+    .vwr {
       position: fixed;
       inset: 0;
       z-index: 500;
-      background: rgba(8,7,6,0.97);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
       pointer-events: none;
+    }
+    .vwr.active { pointer-events: all; }
+
+    .vwr__backdrop {
+      position: absolute;
+      inset: 0;
+      background: #080706;
+      opacity: 0;
       transition: opacity 0.4s var(--ease);
     }
-    .lb.open { opacity: 1; pointer-events: all; }
-    .lb__img {
-      max-width: 88vw;
-      max-height: 82vh;
-      object-fit: contain;
+    .vwr.active .vwr__backdrop { opacity: 1; }
+
+    .vwr__img {
+      position: fixed;
+      object-fit: cover;
+      z-index: 1;
       display: block;
-      opacity: 0;
-      scale: 0.97;
-      transition: opacity 0.45s var(--ease) 0.08s, scale 0.45s var(--ease) 0.08s;
+      opacity: 1;
+      transition: left 0.48s var(--ease), top 0.48s var(--ease),
+                  width 0.48s var(--ease), height 0.48s var(--ease),
+                  opacity 0.25s ease;
     }
-    .lb.open .lb__img { opacity: 1; scale: 1; }
-    .lb__top {
-      position: absolute;
-      inset: 0 0 auto;
+
+    .vwr__panel {
+      position: fixed;
+      top: 0; right: 0;
+      width: 50vw;
+      height: 100vh;
+      z-index: 2;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 24px 44px;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 8%;
+      color: #e8e4df;
+      translate: 100% 0;
+      transition: translate 0.52s var(--ease);
+      border-left: 1px solid rgba(255,255,255,0.08);
     }
-    .lb__cap { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:#666; }
-    .lb__x   { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:#666; transition:color .3s; }
-    .lb__x:hover { color:#e0dbd4; }
-    .lb__nav {
+    .vwr.split .vwr__panel { translate: 0 0; }
+
+    .vwr__x {
       position: absolute;
-      inset: auto 0 0;
-      display: flex;
-      justify-content: space-between;
-      padding: 24px 44px;
+      top: 32px; right: 40px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(232,228,223,0.45);
+      transition: color 0.3s;
     }
-    .lb__arr { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:#666; transition:color .3s; }
-    .lb__arr:hover { color:#e0dbd4; }
+    .vwr__x:hover { color: #e8e4df; }
+
+    .vwr__info { margin-bottom: 52px; }
+    .vwr__cap {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(232,228,223,0.45);
+      margin-bottom: 22px;
+    }
+    .vwr__desc {
+      font-family: 'Spectral', serif;
+      font-size: 19px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: #e8e4df;
+    }
+    .vwr__nav { display: flex; gap: 32px; }
+    .vwr__arr {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(232,228,223,0.45);
+      transition: color 0.3s;
+    }
+    .vwr__arr:hover { color: #e8e4df; }
 
     /* ─── FOOTER ─────────────────────────────────────────── */
     footer {
@@ -576,47 +624,53 @@
     </div>
 
     <!-- Row 1: full-bleed wide -->
-    <div class="bleed fade-img">
+    <div class="bleed fade-img" style="margin-bottom: 52px;">
       <div class="item r-wide"
            data-src="https://picsum.photos/seed/ph1/1600/700"
-           data-cap="Untitled, 2024">
+           data-cap="Untitled, 2024"
+           data-desc="Shot on location, early morning. Available light, long exposure. The fog hadn't lifted yet.">
         <img src="https://picsum.photos/seed/ph1/1600/700" alt="">
       </div>
     </div>
 
-    <!-- Row 2: portrait pair -->
-    <div class="pair pair--7-5">
+    <!-- Row 2: portrait pair — shifted right -->
+    <div class="pair pair--7-5" style="padding-left: 12%; padding-right: 3%;">
       <div class="item r-port fade-img"
            data-src="https://picsum.photos/seed/ph2/900/1200"
-           data-cap="Study I">
+           data-cap="Study I"
+           data-desc="A study in stillness. The subject held the pose for nearly an hour. Grain pushed in the darkroom.">
         <img src="https://picsum.photos/seed/ph2/900/1200" alt="">
         <span class="item__cap">Study I</span>
       </div>
       <div class="item r-port fade-img" data-d="1"
            data-src="https://picsum.photos/seed/ph3/750/1000"
-           data-cap="Study II">
+           data-cap="Study II"
+           data-desc="Counterpart to Study I. Same session, different light. The shadow fills the left half of the frame.">
         <img src="https://picsum.photos/seed/ph3/750/1000" alt="">
         <span class="item__cap">Study II</span>
       </div>
     </div>
 
-    <!-- Row 3: square trio -->
-    <div class="trio">
+    <!-- Row 3: square trio — shifted left, larger gap after -->
+    <div class="trio" style="padding-left: 3%; padding-right: 9%; margin-bottom: 100px;">
       <div class="item r-sq fade-img"
            data-src="https://picsum.photos/seed/ph4/700/700"
-           data-cap="Fragment I">
+           data-cap="Fragment I"
+           data-desc="Detail of the studio wall after a session. Residue as record. Paint and tape on plaster.">
         <img src="https://picsum.photos/seed/ph4/700/700" alt="">
         <span class="item__cap">Fragment I</span>
       </div>
       <div class="item r-sq fade-img" data-d="1"
            data-src="https://picsum.photos/seed/ph5/700/700"
-           data-cap="Fragment II">
+           data-cap="Fragment II"
+           data-desc="Collected objects arranged on the table. The composition shifted through the day as light moved.">
         <img src="https://picsum.photos/seed/ph5/700/700" alt="">
         <span class="item__cap">Fragment II</span>
       </div>
       <div class="item r-sq fade-img" data-d="2"
            data-src="https://picsum.photos/seed/ph6/700/700"
-           data-cap="Fragment III">
+           data-cap="Fragment III"
+           data-desc="End of the session. The table cleared. What remains is the trace.">
         <img src="https://picsum.photos/seed/ph6/700/700" alt="">
         <span class="item__cap">Fragment III</span>
       </div>
@@ -627,59 +681,66 @@
       <p>"The image doesn't try to explain itself. It asks only to be looked at."</p>
     </div>
 
-    <!-- Row 4: even square pair -->
-    <div class="pair pair--even">
+    <!-- Row 4: even square pair — shifted left -->
+    <div class="pair pair--even" style="padding-left: 3%; padding-right: 12%; margin-bottom: 80px;">
       <div class="item r-sq fade-img"
            data-src="https://picsum.photos/seed/mu1/900/900"
-           data-cap="Release I">
+           data-cap="Release I"
+           data-desc="Cover artwork for the first release. Processed in the darkroom. Limited edition print.">
         <img src="https://picsum.photos/seed/mu1/900/900" alt="">
         <span class="item__cap">Release I</span>
       </div>
       <div class="item r-sq fade-img" data-d="1"
            data-src="https://picsum.photos/seed/mu2/900/900"
-           data-cap="Release II">
+           data-cap="Release II"
+           data-desc="Companion piece to Release I. The second in the series. Shot in the same room, weeks later.">
         <img src="https://picsum.photos/seed/mu2/900/900" alt="">
         <span class="item__cap">Release II</span>
       </div>
     </div>
 
-    <!-- Row 5: cinematic framed -->
-    <div class="framed fade-img">
+    <!-- Row 5: cinematic framed — slight right lean -->
+    <div class="framed fade-img" style="padding-left: 4%; padding-right: 11%;">
       <div class="item r-cin"
            data-src="https://picsum.photos/seed/mu3/1600/690"
-           data-cap="Live, 2024">
+           data-cap="Live, 2024"
+           data-desc="Captured during a live set. The room was almost silent between songs. Handheld, available light.">
         <img src="https://picsum.photos/seed/mu3/1600/690" alt="">
         <span class="item__cap">Live, 2024</span>
       </div>
     </div>
 
-    <!-- Row 6: portrait + landscape pair -->
-    <div class="pair pair--5-7">
+    <!-- Row 6: portrait + landscape — shifted right, larger gap -->
+    <div class="pair pair--5-7" style="padding-left: 10%; padding-right: 3%; margin-bottom: 100px;">
       <div class="item r-port fade-img"
            data-src="https://picsum.photos/seed/mu4/700/930"
-           data-cap="Session I">
+           data-cap="Session I"
+           data-desc="From the recording session. Between takes. The monitor glow on the wall.">
         <img src="https://picsum.photos/seed/mu4/700/930" alt="">
         <span class="item__cap">Session I</span>
       </div>
       <div class="item r-land fade-img" data-d="1"
            data-src="https://picsum.photos/seed/mu5/1000/625"
-           data-cap="Session II">
+           data-cap="Session II"
+           data-desc="The room after everyone had left. Equipment still set up. The session's residue.">
         <img src="https://picsum.photos/seed/mu5/1000/625" alt="">
         <span class="item__cap">Session II</span>
       </div>
     </div>
 
-    <!-- Row 7: tall + landscape pair -->
-    <div class="pair pair--even">
+    <!-- Row 7: tall + landscape — slight left lean -->
+    <div class="pair pair--even" style="padding-left: 3%; padding-right: 9%;">
       <div class="item r-tall fade-img"
            data-src="https://picsum.photos/seed/va1/700/1050"
-           data-cap="Composition I">
+           data-cap="Composition I"
+           data-desc="Found materials arranged and photographed. The composition evolved over three days before this shot.">
         <img src="https://picsum.photos/seed/va1/700/1050" alt="">
         <span class="item__cap">Composition I</span>
       </div>
       <div class="item r-land fade-img" data-d="1"
            data-src="https://picsum.photos/seed/va2/1200/750"
-           data-cap="Composition II">
+           data-cap="Composition II"
+           data-desc="Response to Composition I. Looser, less controlled. The materials allowed to settle on their own.">
         <img src="https://picsum.photos/seed/va2/1200/750" alt="">
         <span class="item__cap">Composition II</span>
       </div>
@@ -689,7 +750,8 @@
     <div class="bleed fade-img">
       <div class="item r-cin"
            data-src="https://picsum.photos/seed/va6/1600/690"
-           data-cap="Panorama">
+           data-cap="Panorama"
+           data-desc="A long view. Taken from the roof at dusk. The city quiet for once.">
         <img src="https://picsum.photos/seed/va6/1600/690" alt="">
       </div>
     </div>
@@ -699,39 +761,44 @@
       <p>"Recorded in solitude. The room as instrument — silence as score."</p>
     </div>
 
-    <!-- Row 9: square trio -->
-    <div class="trio">
+    <!-- Row 9: square trio — shifted right -->
+    <div class="trio" style="padding-left: 8%; padding-right: 3%; margin-bottom: 92px;">
       <div class="item r-sq fade-img"
            data-src="https://picsum.photos/seed/va3/700/700"
-           data-cap="Study III">
+           data-cap="Study III"
+           data-desc="Studio study. Oil and pigment on found paper. The texture shows through.">
         <img src="https://picsum.photos/seed/va3/700/700" alt="">
         <span class="item__cap">Study III</span>
       </div>
       <div class="item r-sq fade-img" data-d="1"
            data-src="https://picsum.photos/seed/va4/700/700"
-           data-cap="Study IV">
+           data-cap="Study IV"
+           data-desc="Ink on glass. The image reversed and re-photographed. A doubled uncertainty.">
         <img src="https://picsum.photos/seed/va4/700/700" alt="">
         <span class="item__cap">Study IV</span>
       </div>
       <div class="item r-sq fade-img" data-d="2"
            data-src="https://picsum.photos/seed/va5/700/700"
-           data-cap="Study V">
+           data-cap="Study V"
+           data-desc="Final study in the series. The material beginning to break down. Entropy as method.">
         <img src="https://picsum.photos/seed/va5/700/700" alt="">
         <span class="item__cap">Study V</span>
       </div>
     </div>
 
-    <!-- Row 10: landscape pair -->
-    <div class="pair pair--7-5">
+    <!-- Row 10: landscape pair — shifted left -->
+    <div class="pair pair--7-5" style="padding-left: 3%; padding-right: 10%;">
       <div class="item r-land fade-img"
            data-src="https://picsum.photos/seed/pr2/1100/688"
-           data-cap="Process I">
+           data-cap="Process I"
+           data-desc="Documentation of the process. Mid-session, before editing. The workspace in use.">
         <img src="https://picsum.photos/seed/pr2/1100/688" alt="">
         <span class="item__cap">Process I</span>
       </div>
       <div class="item r-land fade-img" data-d="1"
            data-src="https://picsum.photos/seed/pr3/700/438"
-           data-cap="Process II">
+           data-cap="Process II"
+           data-desc="A different angle on the same session. What the camera caught between planned shots.">
         <img src="https://picsum.photos/seed/pr3/700/438" alt="">
         <span class="item__cap">Process II</span>
       </div>
@@ -741,29 +808,33 @@
     <div class="framed fade-img">
       <div class="item r-land"
            data-src="https://picsum.photos/seed/pr1/1600/1000"
-           data-cap="Studio, 2024">
+           data-cap="Studio, 2024"
+           data-desc="The studio at the start of the year. Everything in its place before the work began.">
         <img src="https://picsum.photos/seed/pr1/1600/1000" alt="">
         <span class="item__cap">Studio, 2024</span>
       </div>
     </div>
 
-    <!-- Row 12: final square trio -->
-    <div class="trio">
+    <!-- Row 12: final square trio — shifted right -->
+    <div class="trio" style="padding-left: 10%; padding-right: 3%; margin-bottom: 92px;">
       <div class="item r-sq fade-img"
            data-src="https://picsum.photos/seed/pr4/700/700"
-           data-cap="Detail I">
+           data-cap="Detail I"
+           data-desc="Close detail of a printed sheet. The ink still wet. Magnification reveals the grain.">
         <img src="https://picsum.photos/seed/pr4/700/700" alt="">
         <span class="item__cap">Detail I</span>
       </div>
       <div class="item r-sq fade-img" data-d="1"
            data-src="https://picsum.photos/seed/pr5/700/700"
-           data-cap="Detail II">
+           data-cap="Detail II"
+           data-desc="Second detail from the same print run. The surface under inspection reveals small variations.">
         <img src="https://picsum.photos/seed/pr5/700/700" alt="">
         <span class="item__cap">Detail II</span>
       </div>
       <div class="item r-sq fade-img" data-d="2"
            data-src="https://picsum.photos/seed/pr6/700/700"
-           data-cap="Detail III">
+           data-cap="Detail III"
+           data-desc="The final print in the series. Edge of the sheet. Where the image ends.">
         <img src="https://picsum.photos/seed/pr6/700/700" alt="">
         <span class="item__cap">Detail III</span>
       </div>
@@ -804,16 +875,20 @@
     <span class="ftr__copy">© Breakfast in Space</span>
   </footer>
 
-  <!-- LIGHTBOX ────────────────────────────────────────── -->
-  <div class="lb" id="lb">
-    <div class="lb__top">
-      <span class="lb__cap" id="lbCap"></span>
-      <button class="lb__x" id="lbX">Close</button>
-    </div>
-    <img class="lb__img" id="lbImg" src="" alt="">
-    <div class="lb__nav">
-      <button class="lb__arr" id="lbPrev">← Prev</button>
-      <button class="lb__arr" id="lbNext">Next →</button>
+  <!-- VIEWER ──────────────────────────────────────────── -->
+  <div class="vwr" id="vwr">
+    <div class="vwr__backdrop"></div>
+    <img class="vwr__img" id="vwrImg" src="" alt="">
+    <div class="vwr__panel" id="vwrPanel">
+      <button class="vwr__x" id="vwrX">Close</button>
+      <div class="vwr__info">
+        <span class="vwr__cap" id="vwrCap"></span>
+        <p class="vwr__desc" id="vwrDesc"></p>
+      </div>
+      <div class="vwr__nav">
+        <button class="vwr__arr" id="vwrPrev">← Prev</button>
+        <button class="vwr__arr" id="vwrNext">Next →</button>
+      </div>
     </div>
   </div>
 
@@ -831,52 +906,99 @@
 
     document.querySelectorAll('.fade, .fade-img').forEach(el => io.observe(el));
 
-    // ── LIGHTBOX ───────────────────────────────────────────
-    const lb    = document.getElementById('lb');
-    const lbImg = document.getElementById('lbImg');
-    const lbCap = document.getElementById('lbCap');
-    const lbX   = document.getElementById('lbX');
-    const lbPrv = document.getElementById('lbPrev');
-    const lbNxt = document.getElementById('lbNext');
+    // ── VIEWER ─────────────────────────────────────────────
+    const vwr     = document.getElementById('vwr');
+    const vwrImg  = document.getElementById('vwrImg');
+    const vwrCap  = document.getElementById('vwrCap');
+    const vwrDesc = document.getElementById('vwrDesc');
+    const vwrX    = document.getElementById('vwrX');
+    const vwrPrev = document.getElementById('vwrPrev');
+    const vwrNext = document.getElementById('vwrNext');
     let pool = [], cur = 0;
 
     const getPool = () => Array.from(document.querySelectorAll('.item[data-src]'));
 
-    function open(i) {
-      pool = getPool(); cur = i;
-      lbImg.src = pool[cur].dataset.src;
-      lbCap.textContent = pool[cur].dataset.cap || '';
-      lb.classList.add('open');
+    function openViewer(idx) {
+      pool = getPool(); cur = idx;
+      const el   = pool[cur];
+      const rect = el.querySelector('img').getBoundingClientRect();
+
+      // Snap image to element's current screen position (no animation yet)
+      vwrImg.style.transition = 'none';
+      vwrImg.style.left   = rect.left   + 'px';
+      vwrImg.style.top    = rect.top    + 'px';
+      vwrImg.style.width  = rect.width  + 'px';
+      vwrImg.style.height = rect.height + 'px';
+      vwrImg.style.opacity = '1';
+      vwrImg.src = el.dataset.src;
+
+      vwr.classList.add('active');
       document.body.style.overflow = 'hidden';
-    }
-    function close() {
-      lb.classList.remove('open');
-      document.body.style.overflow = '';
-      setTimeout(() => { lbImg.src = ''; }, 420);
-    }
-    function go(d) {
-      cur = (cur + d + pool.length) % pool.length;
-      lbImg.style.opacity = '0';
+
+      // Phase 1: zoom toward viewport center
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        const vw = window.innerWidth, vh = window.innerHeight;
+        const fw = Math.min(vw * 0.82, 1100);
+        const fh = vh * 0.82;
+        vwrImg.style.transition = [
+          'left 0.46s var(--ease)', 'top 0.46s var(--ease)',
+          'width 0.46s var(--ease)', 'height 0.46s var(--ease)'
+        ].join(', ');
+        vwrImg.style.left   = ((vw - fw) / 2) + 'px';
+        vwrImg.style.top    = ((vh - fh) / 2) + 'px';
+        vwrImg.style.width  = fw + 'px';
+        vwrImg.style.height = fh + 'px';
+      }));
+
+      // Phase 2: slide image to left half, slide in text panel
       setTimeout(() => {
-        lbImg.src = pool[cur].dataset.src;
-        lbCap.textContent = pool[cur].dataset.cap || '';
-        lbImg.style.opacity = '1';
-      }, 200);
+        vwrImg.style.transition = [
+          'left 0.52s var(--ease)', 'top 0.52s var(--ease)',
+          'width 0.52s var(--ease)', 'height 0.52s var(--ease)'
+        ].join(', ');
+        vwrImg.style.left   = '0';
+        vwrImg.style.top    = '0';
+        vwrImg.style.width  = '50vw';
+        vwrImg.style.height = '100vh';
+        vwrCap.textContent  = el.dataset.cap  || '';
+        vwrDesc.textContent = el.dataset.desc || '';
+        vwr.classList.add('split');
+      }, 530);
+    }
+
+    function closeViewer() {
+      vwr.classList.remove('active', 'split');
+      document.body.style.overflow = '';
+      setTimeout(() => { vwrImg.src = ''; }, 500);
+    }
+
+    function goViewer(d) {
+      pool = getPool();
+      cur  = (cur + d + pool.length) % pool.length;
+      vwrImg.style.opacity = '0';
+      setTimeout(() => {
+        vwrImg.src = pool[cur].dataset.src;
+        vwrCap.textContent  = pool[cur].dataset.cap  || '';
+        vwrDesc.textContent = pool[cur].dataset.desc || '';
+        vwrImg.style.opacity = '1';
+      }, 240);
     }
 
     getPool().forEach(el => {
-      el.addEventListener('click', () => { pool = getPool(); open(pool.indexOf(el)); });
+      el.addEventListener('click', () => { pool = getPool(); openViewer(pool.indexOf(el)); });
     });
 
-    lbX.addEventListener('click',   close);
-    lbPrv.addEventListener('click', () => go(-1));
-    lbNxt.addEventListener('click', () => go(1));
-    lb.addEventListener('click',    e => { if (e.target === lb) close(); });
+    vwrX.addEventListener('click',    closeViewer);
+    vwrPrev.addEventListener('click', () => goViewer(-1));
+    vwrNext.addEventListener('click', () => goViewer(1));
+    vwr.addEventListener('click', e => {
+      if (e.target === vwr || e.target.classList.contains('vwr__backdrop')) closeViewer();
+    });
     document.addEventListener('keydown', e => {
-      if (!lb.classList.contains('open')) return;
-      if (e.key === 'Escape')     close();
-      if (e.key === 'ArrowLeft')  go(-1);
-      if (e.key === 'ArrowRight') go(1);
+      if (!vwr.classList.contains('active')) return;
+      if (e.key === 'Escape')     closeViewer();
+      if (e.key === 'ArrowLeft')  goViewer(-1);
+      if (e.key === 'ArrowRight') goViewer(1);
     });
 
     // ── SOUND PLAYER ──────────────────────────────────────
