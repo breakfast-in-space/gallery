@@ -534,6 +534,50 @@
     /* First banner image set in CSS; second set via inline style */
     #parImg { background-image: url('https://picsum.photos/seed/ph1/1600/700'); }
 
+    /* ─── TEXT BLOCKS ────────────────────────────────────── */
+    .text-block {
+      padding: 80px 52px;
+    }
+    .text-block--l {
+      max-width: 700px;
+      padding-right: 8%;
+    }
+    .text-block--r {
+      max-width: 700px;
+      margin-left: auto;
+      padding-left: 8%;
+    }
+    .text-block__label {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--t2);
+      margin-bottom: 28px;
+    }
+    .text-block__body {
+      font-family: 'Spectral', serif;
+      font-size: 19px;
+      font-weight: 300;
+      line-height: 1.9;
+      color: var(--t1);
+    }
+    /* Horizontal entry variants */
+    .fade-left {
+      opacity: 0;
+      translate: -26px 0;
+      transition: opacity 1.0s var(--ease), translate 1.0s var(--ease);
+    }
+    .fade-left.in { opacity: 1; translate: 0 0; }
+    .fade-right {
+      opacity: 0;
+      translate: 26px 0;
+      transition: opacity 1.15s var(--ease), translate 1.15s var(--ease);
+    }
+    .fade-right.in { opacity: 1; translate: 0 0; }
+
     /* ─── FOOTER ─────────────────────────────────────────── */
     footer {
       padding: 32px 52px;
@@ -661,7 +705,7 @@
       </div>
     </div>
 
-    <!-- Row 3: square trio — shifted left, larger gap after -->
+    <!-- Row 3: square trio — shifted left -->
     <div class="trio" style="padding-left: 3%; padding-right: 9%; margin-bottom: 100px;">
       <div class="item r-sq fade-img"
            data-src="https://picsum.photos/seed/ph4/700/700"
@@ -686,9 +730,15 @@
       </div>
     </div>
 
-    <!-- Pull quote -->
+    <!-- Pull quote — kept -->
     <div class="pull fade">
       <p>"The image doesn't try to explain itself. It asks only to be looked at."</p>
+    </div>
+
+    <!-- Text block I — slides up, slight delay -->
+    <div class="text-block text-block--l fade" style="transition-delay: 0.08s;">
+      <span class="text-block__label">Photography</span>
+      <p class="text-block__body">The work begins with attention — a sustained looking at things that are already there. Each photograph is made with available light and minimal intervention. The grain is left. The blur stays. What matters is the quality of presence, not the perfection of the image.<br><br>Most of these were made slowly, in between other things. Not commissions. Not assignments. Just looking.</p>
     </div>
 
     <!-- Row 4: even square pair — shifted left -->
@@ -756,15 +806,16 @@
       </div>
     </div>
 
+    <!-- Text block II — slides from right, different timing -->
+    <div class="text-block text-block--r fade-right" style="transition-delay: 0.12s;">
+      <span class="text-block__label">Music</span>
+      <p class="text-block__body">The recordings happen in solitude. The room becomes the instrument; silence, the score. What ends up on a release is the residue of that process — decisions made in the small hours, in a space that didn't ask for explanation.<br><br>Studio documentation is kept as part of the record. The process and the product aren't separate.</p>
+    </div>
+
     <!-- Row 8: full-bleed static banner -->
     <div class="parallax-banner parallax-banner--short">
       <div class="parallax-banner__img"
            style="background-image: url('https://picsum.photos/seed/va6/1600/690')"></div>
-    </div>
-
-    <!-- Pull quote -->
-    <div class="pull fade">
-      <p>"Recorded in solitude. The room as instrument — silence as score."</p>
     </div>
 
     <!-- Row 9: square trio — shifted right -->
@@ -790,6 +841,12 @@
         <img src="https://picsum.photos/seed/va5/700/700" alt="">
         <span class="item__cap">Study V</span>
       </div>
+    </div>
+
+    <!-- Text block III — slides from left, longer duration -->
+    <div class="text-block text-block--l fade-left">
+      <span class="text-block__label">Visual Art</span>
+      <p class="text-block__body">The studio work resists easy categorization. Oil, ink, found paper — materials that carry their own histories. The process is slow, and mostly private. What gets shown is whatever survives contact with the surface.<br><br>Some of the work exists only as documentation. The object is gone. The photograph is what remains.</p>
     </div>
 
     <!-- Row 10: landscape pair — shifted left -->
@@ -910,7 +967,7 @@
       });
     }, { threshold: 0.07 });
 
-    document.querySelectorAll('.fade, .fade-img').forEach(el => io.observe(el));
+    document.querySelectorAll('.fade, .fade-img, .fade-left, .fade-right').forEach(el => io.observe(el));
 
     // ── VIEWER ─────────────────────────────────────────────
     const vwr     = document.getElementById('vwr');
@@ -994,7 +1051,11 @@
 
       setTimeout(() => {
         document.body.style.overflow = '';
-        vwrImg.src = '';
+        vwrImg.removeAttribute('src');
+        vwrImg.style.transition = 'none';
+        vwrImg.style.left   = '-200vw';
+        vwrImg.style.width  = '0';
+        vwrImg.style.height = '0';
         vwrImg.style.opacity = '1'; // reset for next open
         viewerBusy = false;
       }, 1450);
