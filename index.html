@@ -347,7 +347,7 @@
     .player {
       position: fixed;
       bottom: 0; left: 0; right: 0;
-      z-index: 200;
+      z-index: 600;
       background: var(--bg);
       border-top: 1px solid var(--line);
       padding: 0 52px;
@@ -439,7 +439,7 @@
       inset: 0;
       background: #080706;
       opacity: 0;
-      transition: opacity 0.4s var(--ease);
+      transition: opacity 0.55s var(--ease);
     }
     .vwr.active .vwr__backdrop { opacity: 1; }
 
@@ -449,8 +449,8 @@
       z-index: 1;
       display: block;
       opacity: 1;
-      transition: left 0.48s var(--ease), top 0.48s var(--ease),
-                  width 0.48s var(--ease), height 0.48s var(--ease),
+      transition: left 0.65s var(--ease), top 0.65s var(--ease),
+                  width 0.65s var(--ease), height 0.65s var(--ease),
                   opacity 0.25s ease;
     }
 
@@ -466,7 +466,7 @@
       padding: 80px 8%;
       color: #e8e4df;
       translate: 100% 0;
-      transition: translate 0.52s var(--ease);
+      transition: translate 0.65s var(--ease);
       border-left: 1px solid rgba(255,255,255,0.08);
     }
     .vwr.split .vwr__panel { translate: 0 0; }
@@ -513,6 +513,25 @@
       transition: color 0.3s;
     }
     .vwr__arr:hover { color: #e8e4df; }
+
+    /* ─── PARALLAX BANNER ────────────────────────────────── */
+    .parallax-banner {
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 72px;
+    }
+    .parallax-banner__img {
+      position: absolute;
+      top: -28%;
+      left: 0; right: 0;
+      bottom: -28%;
+      background-image: url('https://picsum.photos/seed/ph1/1600/700');
+      background-size: cover;
+      background-position: center;
+      will-change: transform;
+    }
 
     /* ─── FOOTER ─────────────────────────────────────────── */
     footer {
@@ -618,19 +637,9 @@
          Starts with breathing room below the intro.
     ─────────────────────────────────────────────────── -->
 
-    <div class="gallery-start fade">
-      <span class="gallery-start__label">Work</span>
-      <div class="gallery-start__rule"></div>
-    </div>
-
-    <!-- Row 1: full-bleed wide -->
-    <div class="bleed fade-img" style="margin-bottom: 52px;">
-      <div class="item r-wide"
-           data-src="https://picsum.photos/seed/ph1/1600/700"
-           data-cap="Untitled, 2024"
-           data-desc="Shot on location, early morning. Available light, long exposure. The fog hadn't lifted yet.">
-        <img src="https://picsum.photos/seed/ph1/1600/700" alt="">
-      </div>
+    <!-- Parallax banner — full-viewport, scrolls at ~0.4× speed -->
+    <div class="parallax-banner">
+      <div class="parallax-banner__img" id="parImg"></div>
     </div>
 
     <!-- Row 2: portrait pair — shifted right -->
@@ -914,7 +923,7 @@
     const vwrX    = document.getElementById('vwrX');
     const vwrPrev = document.getElementById('vwrPrev');
     const vwrNext = document.getElementById('vwrNext');
-    let pool = [], cur = 0;
+    let pool = [], cur = 0, originRect = null, viewerBusy = false;
 
     const getPool = () => Array.from(document.querySelectorAll('.item[data-src]'));
 
@@ -922,13 +931,13 @@
       pool = getPool(); cur = idx;
       const el   = pool[cur];
       const rect = el.querySelector('img').getBoundingClientRect();
+      originRect = { left: rect.left, top: rect.top, width: rect.width, height: rect.height };
 
-      // Snap image to element's current screen position (no animation yet)
       vwrImg.style.transition = 'none';
-      vwrImg.style.left   = rect.left   + 'px';
-      vwrImg.style.top    = rect.top    + 'px';
-      vwrImg.style.width  = rect.width  + 'px';
-      vwrImg.style.height = rect.height + 'px';
+      vwrImg.style.left    = rect.left   + 'px';
+      vwrImg.style.top     = rect.top    + 'px';
+      vwrImg.style.width   = rect.width  + 'px';
+      vwrImg.style.height  = rect.height + 'px';
       vwrImg.style.opacity = '1';
       vwrImg.src = el.dataset.src;
 
@@ -938,24 +947,17 @@
       // Phase 1: zoom toward viewport center
       requestAnimationFrame(() => requestAnimationFrame(() => {
         const vw = window.innerWidth, vh = window.innerHeight;
-        const fw = Math.min(vw * 0.82, 1100);
-        const fh = vh * 0.82;
-        vwrImg.style.transition = [
-          'left 0.46s var(--ease)', 'top 0.46s var(--ease)',
-          'width 0.46s var(--ease)', 'height 0.46s var(--ease)'
-        ].join(', ');
+        const fw = Math.min(vw * 0.82, 1100), fh = vh * 0.82;
+        vwrImg.style.transition = 'left 0.65s var(--ease), top 0.65s var(--ease), width 0.65s var(--ease), height 0.65s var(--ease)';
         vwrImg.style.left   = ((vw - fw) / 2) + 'px';
         vwrImg.style.top    = ((vh - fh) / 2) + 'px';
         vwrImg.style.width  = fw + 'px';
         vwrImg.style.height = fh + 'px';
       }));
 
-      // Phase 2: slide image to left half, slide in text panel
+      // Phase 2: slide image to left half, reveal text panel
       setTimeout(() => {
-        vwrImg.style.transition = [
-          'left 0.52s var(--ease)', 'top 0.52s var(--ease)',
-          'width 0.52s var(--ease)', 'height 0.52s var(--ease)'
-        ].join(', ');
+        vwrImg.style.transition = 'left 0.7s var(--ease), top 0.7s var(--ease), width 0.7s var(--ease), height 0.7s var(--ease)';
         vwrImg.style.left   = '0';
         vwrImg.style.top    = '0';
         vwrImg.style.width  = '50vw';
@@ -963,18 +965,47 @@
         vwrCap.textContent  = el.dataset.cap  || '';
         vwrDesc.textContent = el.dataset.desc || '';
         vwr.classList.add('split');
-      }, 530);
+      }, 720);
     }
 
     function closeViewer() {
-      vwr.classList.remove('active', 'split');
-      document.body.style.overflow = '';
-      setTimeout(() => { vwrImg.src = ''; }, 500);
+      if (viewerBusy) return;
+      viewerBusy = true;
+
+      // Phase 2 reverse: image slides back to center, panel slides out
+      vwr.classList.remove('split');
+      const vw = window.innerWidth, vh = window.innerHeight;
+      const fw = Math.min(vw * 0.82, 1100), fh = vh * 0.82;
+      vwrImg.style.transition = 'left 0.65s var(--ease), top 0.65s var(--ease), width 0.65s var(--ease), height 0.65s var(--ease)';
+      vwrImg.style.left   = ((vw - fw) / 2) + 'px';
+      vwrImg.style.top    = ((vh - fh) / 2) + 'px';
+      vwrImg.style.width  = fw + 'px';
+      vwrImg.style.height = fh + 'px';
+
+      // Phase 1 reverse: shrink back to origin, fade backdrop
+      setTimeout(() => {
+        vwrImg.style.transition = 'left 0.7s var(--ease), top 0.7s var(--ease), width 0.7s var(--ease), height 0.7s var(--ease)';
+        if (originRect) {
+          vwrImg.style.left   = originRect.left   + 'px';
+          vwrImg.style.top    = originRect.top    + 'px';
+          vwrImg.style.width  = originRect.width  + 'px';
+          vwrImg.style.height = originRect.height + 'px';
+        }
+        vwr.classList.remove('active');
+      }, 700);
+
+      setTimeout(() => {
+        document.body.style.overflow = '';
+        vwrImg.src = '';
+        viewerBusy = false;
+      }, 1450);
     }
 
     function goViewer(d) {
       pool = getPool();
       cur  = (cur + d + pool.length) % pool.length;
+      const r = pool[cur].querySelector('img').getBoundingClientRect();
+      originRect = { left: r.left, top: r.top, width: r.width, height: r.height };
       vwrImg.style.opacity = '0';
       setTimeout(() => {
         vwrImg.src = pool[cur].dataset.src;
@@ -988,18 +1019,32 @@
       el.addEventListener('click', () => { pool = getPool(); openViewer(pool.indexOf(el)); });
     });
 
-    vwrX.addEventListener('click',    closeViewer);
-    vwrPrev.addEventListener('click', () => goViewer(-1));
-    vwrNext.addEventListener('click', () => goViewer(1));
-    vwr.addEventListener('click', e => {
-      if (e.target === vwr || e.target.classList.contains('vwr__backdrop')) closeViewer();
-    });
+    // Click anywhere on the overlay closes it; nav buttons stop propagation
+    vwr.addEventListener('click', closeViewer);
+    vwrX.addEventListener('click',    e => { e.stopPropagation(); closeViewer(); });
+    vwrPrev.addEventListener('click', e => { e.stopPropagation(); goViewer(-1); });
+    vwrNext.addEventListener('click', e => { e.stopPropagation(); goViewer(1); });
+
     document.addEventListener('keydown', e => {
       if (!vwr.classList.contains('active')) return;
       if (e.key === 'Escape')     closeViewer();
       if (e.key === 'ArrowLeft')  goViewer(-1);
       if (e.key === 'ArrowRight') goViewer(1);
     });
+
+    // ── PARALLAX BANNER ────────────────────────────────────
+    const parImg  = document.getElementById('parImg');
+    const parWrap = parImg ? parImg.parentElement : null;
+
+    function updateParallax() {
+      if (!parImg || !parWrap) return;
+      const rect   = parWrap.getBoundingClientRect();
+      const center = rect.top + rect.height / 2 - window.innerHeight / 2;
+      parImg.style.transform = `translateY(${center * 0.38}px)`;
+    }
+
+    window.addEventListener('scroll', updateParallax, { passive: true });
+    updateParallax();
 
     // ── SOUND PLAYER ──────────────────────────────────────
     const audio      = document.getElementById('audio');
