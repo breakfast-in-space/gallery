@@ -578,6 +578,28 @@
     }
     .fade-right.in { opacity: 1; translate: 0 0; }
 
+    /* ─── EDITORIAL PAIRING ──────────────────────────────── */
+    /* Text and images share the same horizontal band         */
+    .ed-pair {
+      display: grid;
+      gap: 48px;
+      margin-bottom: 72px;
+      align-items: start;
+    }
+    .ed-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .ed-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .ed-text {
+      padding: 40px 0;
+    }
+
     /* ─── FOOTER ─────────────────────────────────────────── */
     footer {
       padding: 32px 52px;
@@ -602,6 +624,7 @@
       footer { padding: 28px; }
       .pair--7-5, .pair--5-7 { grid-template-columns: 1fr 1fr; }
       .framed, .pair, .trio  { padding: 0 3%; }
+      .ed-pair { grid-template-columns: 1fr !important; gap: 32px; padding: 0 5% !important; }
     }
     @media (max-width: 580px) {
       .pair, .pair--even, .trio { grid-template-columns: 1fr; }
@@ -735,27 +758,27 @@
       <p>"The image doesn't try to explain itself. It asks only to be looked at."</p>
     </div>
 
-    <!-- Text block I — slides up, slight delay -->
-    <div class="text-block text-block--l fade" style="transition-delay: 0.08s;">
-      <span class="text-block__label">Photography</span>
-      <p class="text-block__body">The work begins with attention — a sustained looking at things that are already there. Each photograph is made with available light and minimal intervention. The grain is left. The blur stays. What matters is the quality of presence, not the perfection of the image.<br><br>Most of these were made slowly, in between other things. Not commissions. Not assignments. Just looking.</p>
-    </div>
-
-    <!-- Row 4: even square pair — shifted left -->
-    <div class="pair pair--even" style="padding-left: 3%; padding-right: 12%; margin-bottom: 80px;">
-      <div class="item r-sq fade-img"
-           data-src="https://picsum.photos/seed/mu1/900/900"
-           data-cap="Release I"
-           data-desc="Cover artwork for the first release. Processed in the darkroom. Limited edition print.">
-        <img src="https://picsum.photos/seed/mu1/900/900" alt="">
-        <span class="item__cap">Release I</span>
+    <!-- Photography text + square pair — editorial side by side -->
+    <div class="ed-pair" style="padding: 0 4% 0 3%; grid-template-columns: 4fr 6fr; margin-bottom: 80px;">
+      <div class="ed-text fade" style="transition-delay: 0.08s;">
+        <span class="text-block__label">Photography</span>
+        <p class="text-block__body">The work begins with attention — a sustained looking at things that are already there. Each photograph is made with available light and minimal intervention. The grain is left. The blur stays. What matters is the quality of presence, not the perfection of the image.<br><br>Most of these were made slowly, in between other things. Not commissions. Not assignments. Just looking.</p>
       </div>
-      <div class="item r-sq fade-img" data-d="1"
-           data-src="https://picsum.photos/seed/mu2/900/900"
-           data-cap="Release II"
-           data-desc="Companion piece to Release I. The second in the series. Shot in the same room, weeks later.">
-        <img src="https://picsum.photos/seed/mu2/900/900" alt="">
-        <span class="item__cap">Release II</span>
+      <div class="ed-cols">
+        <div class="item r-sq fade-img"
+             data-src="https://picsum.photos/seed/mu1/900/900"
+             data-cap="Release I"
+             data-desc="Cover artwork for the first release. Processed in the darkroom. Limited edition print.">
+          <img src="https://picsum.photos/seed/mu1/900/900" alt="">
+          <span class="item__cap">Release I</span>
+        </div>
+        <div class="item r-sq fade-img" data-d="1"
+             data-src="https://picsum.photos/seed/mu2/900/900"
+             data-cap="Release II"
+             data-desc="Companion piece to Release I. The second in the series. Shot in the same room, weeks later.">
+          <img src="https://picsum.photos/seed/mu2/900/900" alt="">
+          <span class="item__cap">Release II</span>
+        </div>
       </div>
     </div>
 
@@ -788,8 +811,8 @@
       </div>
     </div>
 
-    <!-- Row 7: tall + landscape — slight left lean -->
-    <div class="pair pair--even" style="padding-left: 3%; padding-right: 9%;">
+    <!-- Row 7 + Music text — tall portrait fills left; landscape + text fill the gap on right -->
+    <div class="ed-pair" style="padding: 0 9% 0 3%; grid-template-columns: 1fr 1fr; margin-bottom: 72px;">
       <div class="item r-tall fade-img"
            data-src="https://picsum.photos/seed/va1/700/1050"
            data-cap="Composition I"
@@ -797,19 +820,19 @@
         <img src="https://picsum.photos/seed/va1/700/1050" alt="">
         <span class="item__cap">Composition I</span>
       </div>
-      <div class="item r-land fade-img" data-d="1"
-           data-src="https://picsum.photos/seed/va2/1200/750"
-           data-cap="Composition II"
-           data-desc="Response to Composition I. Looser, less controlled. The materials allowed to settle on their own.">
-        <img src="https://picsum.photos/seed/va2/1200/750" alt="">
-        <span class="item__cap">Composition II</span>
+      <div class="ed-stack">
+        <div class="item r-land fade-img" data-d="1"
+             data-src="https://picsum.photos/seed/va2/1200/750"
+             data-cap="Composition II"
+             data-desc="Response to Composition I. Looser, less controlled. The materials allowed to settle on their own.">
+          <img src="https://picsum.photos/seed/va2/1200/750" alt="">
+          <span class="item__cap">Composition II</span>
+        </div>
+        <div class="ed-text fade-right" style="transition-delay: 0.12s;">
+          <span class="text-block__label">Music</span>
+          <p class="text-block__body">The recordings happen in solitude. The room becomes the instrument; silence, the score. What ends up on a release is the residue of that process — decisions made in the small hours, in a space that didn't ask for explanation.<br><br>Studio documentation is kept as part of the record. The process and the product aren't separate.</p>
+        </div>
       </div>
-    </div>
-
-    <!-- Text block II — slides from right, different timing -->
-    <div class="text-block text-block--r fade-right" style="transition-delay: 0.12s;">
-      <span class="text-block__label">Music</span>
-      <p class="text-block__body">The recordings happen in solitude. The room becomes the instrument; silence, the score. What ends up on a release is the residue of that process — decisions made in the small hours, in a space that didn't ask for explanation.<br><br>Studio documentation is kept as part of the record. The process and the product aren't separate.</p>
     </div>
 
     <!-- Row 8: full-bleed static banner -->
@@ -843,27 +866,27 @@
       </div>
     </div>
 
-    <!-- Text block III — slides from left, longer duration -->
-    <div class="text-block text-block--l fade-left">
-      <span class="text-block__label">Visual Art</span>
-      <p class="text-block__body">The studio work resists easy categorization. Oil, ink, found paper — materials that carry their own histories. The process is slow, and mostly private. What gets shown is whatever survives contact with the surface.<br><br>Some of the work exists only as documentation. The object is gone. The photograph is what remains.</p>
-    </div>
-
-    <!-- Row 10: landscape pair — shifted left -->
-    <div class="pair pair--7-5" style="padding-left: 3%; padding-right: 10%;">
-      <div class="item r-land fade-img"
-           data-src="https://picsum.photos/seed/pr2/1100/688"
-           data-cap="Process I"
-           data-desc="Documentation of the process. Mid-session, before editing. The workspace in use.">
-        <img src="https://picsum.photos/seed/pr2/1100/688" alt="">
-        <span class="item__cap">Process I</span>
+    <!-- Visual Art text + landscape pair — images stack left, text fills right -->
+    <div class="ed-pair" style="padding: 0 10% 0 3%; grid-template-columns: 6fr 4fr; margin-bottom: 72px;">
+      <div class="ed-stack">
+        <div class="item r-land fade-img"
+             data-src="https://picsum.photos/seed/pr2/1100/688"
+             data-cap="Process I"
+             data-desc="Documentation of the process. Mid-session, before editing. The workspace in use.">
+          <img src="https://picsum.photos/seed/pr2/1100/688" alt="">
+          <span class="item__cap">Process I</span>
+        </div>
+        <div class="item r-land fade-img" data-d="1"
+             data-src="https://picsum.photos/seed/pr3/700/438"
+             data-cap="Process II"
+             data-desc="A different angle on the same session. What the camera caught between planned shots.">
+          <img src="https://picsum.photos/seed/pr3/700/438" alt="">
+          <span class="item__cap">Process II</span>
+        </div>
       </div>
-      <div class="item r-land fade-img" data-d="1"
-           data-src="https://picsum.photos/seed/pr3/700/438"
-           data-cap="Process II"
-           data-desc="A different angle on the same session. What the camera caught between planned shots.">
-        <img src="https://picsum.photos/seed/pr3/700/438" alt="">
-        <span class="item__cap">Process II</span>
+      <div class="ed-text fade-left">
+        <span class="text-block__label">Visual Art</span>
+        <p class="text-block__body">The studio work resists easy categorization. Oil, ink, found paper — materials that carry their own histories. The process is slow, and mostly private. What gets shown is whatever survives contact with the surface.<br><br>Some of the work exists only as documentation. The object is gone. The photograph is what remains.</p>
       </div>
     </div>
 
