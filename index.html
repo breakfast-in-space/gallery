@@ -5,16 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gallery — Breakfast in Space</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,700&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
   <style>
 
+    /* ─── TOKENS ─────────────────────────────────────────── */
     :root {
-      --bg:    #080808;
-      --line:  #161616;
-      --t1:    #b8b8b8;
-      --t2:    #444;
-      --t3:    #1e1e1e;
-      --ease:  cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --bg:     #edecea;
+      --line:   #cbc7c2;
+      --t1:     #0e0d0b;
+      --t2:     #7c7870;
+      --t3:     #b4b0ab;
+      --accent: #304254;
+      --ease:   cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,7 +26,7 @@
     body {
       background: var(--bg);
       color: var(--t1);
-      font-family: 'Inter', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-weight: 300;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
@@ -32,9 +35,7 @@
     a { text-decoration: none; color: inherit; }
     button { cursor: pointer; font-family: inherit; background: none; border: none; }
 
-    /* ─────────────────────────────────────────
-       HEADER
-    ───────────────────────────────────────── */
+    /* ─── HEADER ─────────────────────────────────────────── */
     .hdr {
       position: fixed;
       inset: 0 0 auto;
@@ -48,66 +49,85 @@
       border-bottom: 1px solid var(--line);
     }
     .hdr__logo {
-      font-family: 'Inter', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 10px;
-      letter-spacing: 0.32em;
+      font-weight: 400;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--t2);
-      transition: color 0.35s;
+      transition: color 0.3s;
     }
     .hdr__logo:hover { color: var(--t1); }
     .hdr__label {
+      font-family: 'DM Sans', sans-serif;
       font-size: 10px;
-      letter-spacing: 0.32em;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--t3);
     }
 
-    /* ─────────────────────────────────────────
-       PAGE HERO
-    ───────────────────────────────────────── */
+    /* ─── HERO ───────────────────────────────────────────── */
     .hero {
       height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      gap: 18px;
       padding-top: 56px;
       border-bottom: 1px solid var(--line);
       position: relative;
     }
     .hero__eye {
-      font-family: 'Inter', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 9px;
+      font-weight: 400;
       letter-spacing: 0.36em;
       text-transform: uppercase;
       color: var(--t2);
+      margin-bottom: 22px;
+      animation: hFade 0.8s var(--ease) 0.2s both;
+    }
+    /* Mask container clips the sliding title */
+    .hero__mask {
+      overflow: hidden;
+      margin-bottom: 36px;
     }
     .hero__title {
-      font-family: 'Spectral', serif;
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-weight: 300;
-      font-size: clamp(80px, 14vw, 160px);
-      line-height: 0.92;
+      font-size: clamp(88px, 13.5vw, 172px);
+      line-height: 0.9;
       color: var(--t1);
-      letter-spacing: -0.015em;
+      letter-spacing: -0.02em;
+      animation: maskUp 1.3s var(--ease) 0.35s both;
+    }
+    /* Animated divider line */
+    .hero__line {
+      width: 80px;
+      height: 1px;
+      background: var(--line);
+      transform-origin: left center;
+      animation: lineGrow 1.4s var(--ease) 1s both;
     }
     .hero__scroll {
       position: absolute;
       bottom: 36px;
-      font-family: 'Inter', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 9px;
+      font-weight: 400;
       letter-spacing: 0.32em;
       text-transform: uppercase;
       color: var(--t3);
-      animation: blink 3s ease-in-out infinite;
+      animation: hFade 0.8s var(--ease) 1.5s both, blink 3s ease-in-out 2.5s infinite;
     }
-    @keyframes blink { 0%,100%{opacity:.2} 50%{opacity:.8} }
+    @keyframes maskUp  { from { translate: 0 110%; } to { translate: 0 0; } }
+    @keyframes hFade   { from { opacity: 0; }        to { opacity: 1; }    }
+    @keyframes lineGrow{ from { scale: 0 1; }         to { scale: 1 1; }   }
+    @keyframes blink   { 0%,100%{opacity:.15} 50%{opacity:.7} }
 
-    /* ─────────────────────────────────────────
-       ARTICLE INTRO  (ignant meta + body text)
-    ───────────────────────────────────────── */
+    /* ─── ARTICLE INTRO ──────────────────────────────────── */
     .article {
       display: grid;
       grid-template-columns: 220px 1fr;
@@ -117,17 +137,16 @@
       max-width: 1200px;
       margin: 0 auto;
     }
-
-    /* Left: meta */
     .meta { padding-top: 6px; }
     .meta__group { margin-bottom: 36px; }
     .meta__label {
       display: block;
-      font-family: 'Inter', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 9px;
+      font-weight: 400;
       letter-spacing: 0.3em;
       text-transform: uppercase;
-      color: var(--t2);
+      color: var(--t3);
       margin-bottom: 8px;
     }
     .meta__val {
@@ -135,32 +154,25 @@
       font-family: 'Spectral', serif;
       font-size: 15px;
       font-weight: 300;
-      color: #707070;
-      line-height: 1.6;
+      color: var(--t2);
+      line-height: 1.7;
     }
-    .meta__val a {
-      border-bottom: 1px solid var(--line);
-      transition: color 0.3s, border-color 0.3s;
-    }
+    .meta__val a { border-bottom: 1px solid var(--line); transition: color 0.3s, border-color 0.3s; }
     .meta__val a:hover { color: var(--t1); border-color: var(--t2); }
-
-    /* Right: body */
-    .body-text { }
 
     .body-text p {
       font-family: 'Spectral', serif;
       font-size: 18px;
       font-weight: 300;
       line-height: 1.85;
-      color: #7c7c7c;
+      color: var(--t2);
       letter-spacing: 0.01em;
       margin-bottom: 28px;
     }
     .body-text p:last-child { margin-bottom: 0; }
-
-    /* Drop cap on first paragraph */
+    /* Cormorant drop cap */
     .body-text p:first-child::first-letter {
-      font-family: 'Spectral', serif;
+      font-family: 'Cormorant Garamond', serif;
       font-size: 4.8em;
       font-weight: 400;
       float: left;
@@ -169,44 +181,11 @@
       color: var(--t1);
     }
 
-    /* ─────────────────────────────────────────
-       COLLECTION MARKER
-       (chapter heading between image groups)
-    ───────────────────────────────────────── */
-    .chapter {
-      display: grid;
-      grid-template-columns: 220px 1fr;
-      gap: 0 80px;
-      padding: 80px 52px 56px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .chapter__num {
-      font-family: 'Inter', sans-serif;
-      font-size: 9px;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--t3);
-      padding-top: 14px;
-    }
-    .chapter__title {
-      font-family: 'Spectral', serif;
-      font-style: italic;
-      font-weight: 300;
-      font-size: clamp(42px, 5.5vw, 68px);
-      color: var(--t1);
-      line-height: 1.05;
-      letter-spacing: -0.01em;
-      border-top: 1px solid var(--line);
-      padding-top: 12px;
-    }
-
-    /* ─────────────────────────────────────────
-       PARALLAX BANNER
-    ───────────────────────────────────────── */
+    /* ─── COLLECTION BANNER ──────────────────────────────── */
+    /* Full-viewport image stripe with chapter text overlay   */
     .banner {
       position: relative;
-      height: 82vh;
+      height: 100vh;
       overflow: hidden;
     }
     .banner__img {
@@ -220,23 +199,80 @@
       width: 100%; height: 100%;
       object-fit: cover;
       display: block;
-      filter: brightness(0.5);
+      filter: brightness(0.55) saturate(0.85);
+    }
+    /* Bottom gradient for text readability */
+    .banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.75) 0%,
+        rgba(0,0,0,0.18) 42%,
+        transparent 100%
+      );
+      z-index: 1;
+    }
+    /* Chapter label + title inside the banner */
+    .banner__text {
+      position: absolute;
+      bottom: 130px;
+      left: 52px;
+      z-index: 2;
+      color: #e6e2db;
+    }
+    .banner__num {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(230,226,219,0.45);
+      margin-bottom: 14px;
+    }
+    .banner__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(52px, 6.5vw, 90px);
+      line-height: 1.0;
+      letter-spacing: -0.01em;
+    }
+    /* Banner text appears after the banner fades in */
+    .banner.in .banner__text {
+      animation: btextIn 1s var(--ease) 0.3s both;
+    }
+    @keyframes btextIn {
+      from { opacity: 0; translate: 0 18px; }
+      to   { opacity: 1; translate: 0 0; }
     }
 
-    /* ─────────────────────────────────────────
-       BETWEEN-IMAGE TEXT
-    ───────────────────────────────────────── */
+    /* ─── STRIPE PANEL ───────────────────────────────────── */
+    /* Light-background content panel that slides over banner */
+    .stripe-panel {
+      position: relative;
+      z-index: 2;
+      background: var(--bg);
+      margin-top: -80px;
+      padding-top: 72px;
+      border-top: 1px solid rgba(203,199,194,0.7);
+    }
+
+    /* ─── INTERLUDE ──────────────────────────────────────── */
     .interlude {
       display: grid;
       grid-template-columns: 220px 1fr;
       gap: 0 80px;
-      padding: 72px 52px;
+      padding: 64px 52px 72px;
       max-width: 1200px;
       margin: 0 auto;
     }
     .interlude__aside {
-      font-family: 'Inter', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 9px;
+      font-weight: 400;
       letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--t3);
@@ -247,32 +283,37 @@
       font-size: 17px;
       font-weight: 300;
       line-height: 1.9;
-      color: #5e5e5e;
+      color: var(--t2);
       letter-spacing: 0.01em;
       margin-bottom: 20px;
     }
     .interlude__text p:last-child { margin-bottom: 0; }
 
-    /* Pull quote */
+    /* ─── PULL QUOTE ─────────────────────────────────────── */
     .pull {
-      padding: 80px 52px;
-      max-width: 900px;
+      padding: 72px 52px;
+      max-width: 860px;
       margin: 0 auto;
       text-align: center;
     }
     .pull p {
-      font-family: 'Spectral', serif;
+      font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-weight: 300;
-      font-size: clamp(22px, 3vw, 32px);
+      font-size: clamp(22px, 2.8vw, 34px);
       line-height: 1.55;
-      color: #5a5a5a;
+      color: var(--t1);
       letter-spacing: 0.005em;
     }
 
-    /* ─────────────────────────────────────────
-       IMAGE LAYOUTS
-    ───────────────────────────────────────── */
+    /* ─── SECTION DIVIDER ────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 0 52px;
+    }
+
+    /* ─── IMAGE LAYOUTS ──────────────────────────────────── */
     .bleed   { width: 100%; margin-bottom: 6px; }
     .framed  { padding: 0 7%; margin-bottom: 72px; }
 
@@ -294,34 +335,32 @@
       margin-bottom: 72px;
     }
 
-    .col-end { padding-bottom: 96px; }
+    .col-end { padding-bottom: 48px; }
 
-    /* ─────────────────────────────────────────
-       ITEM
-    ───────────────────────────────────────── */
+    /* ─── ITEM ───────────────────────────────────────────── */
     .item {
       position: relative;
       overflow: hidden;
       cursor: pointer;
-      background: #0f0f0f;
+      background: #d5d1cc;
     }
     .item img {
       width: 100%; height: 100%;
       object-fit: cover;
       display: block;
-      filter: brightness(0.75);
-      transition: filter 0.9s var(--ease), scale 0.9s var(--ease);
+      transition: scale 0.9s var(--ease), filter 0.7s var(--ease);
     }
-    .item:hover img { filter: brightness(1); scale: 1.04; }
+    .item:hover img { scale: 1.04; filter: brightness(0.88); }
 
     .item__cap {
       display: block;
-      margin-top: 12px;
-      font-family: 'Inter', sans-serif;
+      margin-top: 10px;
+      font-family: 'DM Sans', sans-serif;
       font-size: 9px;
-      letter-spacing: 0.2em;
+      font-weight: 400;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--t2);
+      color: var(--t3);
     }
 
     /* Aspect ratios */
@@ -332,12 +371,10 @@
     .r-port { aspect-ratio: 3/4; }
     .r-tall { aspect-ratio: 2/3; }
 
-    /* ─────────────────────────────────────────
-       SCROLL REVEAL
-    ───────────────────────────────────────── */
+    /* ─── SCROLL REVEAL ──────────────────────────────────── */
     .fade {
       opacity: 0;
-      translate: 0 30px;
+      translate: 0 28px;
       transition: opacity 1s var(--ease), translate 1s var(--ease);
     }
     .fade.in { opacity: 1; translate: 0 0; }
@@ -348,19 +385,17 @@
     }
     .fade-img.in { opacity: 1; }
 
-    .fade[data-d="1"] { transition-delay: 0.1s; }
-    .fade[data-d="2"] { transition-delay: 0.2s; }
+    .fade[data-d="1"]     { transition-delay: 0.1s; }
+    .fade[data-d="2"]     { transition-delay: 0.2s; }
     .fade-img[data-d="1"] { transition-delay: 0.14s; }
     .fade-img[data-d="2"] { transition-delay: 0.28s; }
 
-    /* ─────────────────────────────────────────
-       LIGHTBOX
-    ───────────────────────────────────────── */
+    /* ─── LIGHTBOX ───────────────────────────────────────── */
     .lb {
       position: fixed;
       inset: 0;
       z-index: 500;
-      background: rgba(4,4,4,0.97);
+      background: rgba(8,7,6,0.97);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -389,9 +424,9 @@
       align-items: center;
       padding: 24px 44px;
     }
-    .lb__cap { font-family:'Inter',sans-serif; font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--t2); }
-    .lb__x   { font-family:'Inter',sans-serif; font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:var(--t2); transition:color .3s; }
-    .lb__x:hover { color: var(--t1); }
+    .lb__cap { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:#666; }
+    .lb__x   { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:#666; transition:color .3s; }
+    .lb__x:hover { color: #e0dbd4; }
 
     .lb__nav {
       position: absolute;
@@ -400,12 +435,10 @@
       justify-content: space-between;
       padding: 24px 44px;
     }
-    .lb__arr { font-family:'Inter',sans-serif; font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:var(--t2); transition:color .3s; }
-    .lb__arr:hover { color: var(--t1); }
+    .lb__arr { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:#666; transition:color .3s; }
+    .lb__arr:hover { color: #e0dbd4; }
 
-    /* ─────────────────────────────────────────
-       FOOTER
-    ───────────────────────────────────────── */
+    /* ─── FOOTER ─────────────────────────────────────────── */
     footer {
       border-top: 1px solid var(--line);
       padding: 40px 52px;
@@ -413,20 +446,18 @@
       justify-content: space-between;
       align-items: center;
     }
-    .ftr__back { font-family:'Inter',sans-serif; font-size:9px; letter-spacing:.26em; text-transform:uppercase; color:var(--t2); transition:color .3s; }
+    .ftr__back { font-family:'DM Sans',sans-serif; font-size:9px; font-weight:400; letter-spacing:.26em; text-transform:uppercase; color:var(--t2); transition:color .3s; }
     .ftr__back:hover { color: var(--t1); }
-    .ftr__copy { font-family:'Inter',sans-serif; font-size:9px; letter-spacing:.18em; color:var(--t3); }
+    .ftr__copy { font-family:'DM Sans',sans-serif; font-size:9px; letter-spacing:.18em; color:var(--t3); }
 
-    /* ─────────────────────────────────────────
-       RESPONSIVE
-    ───────────────────────────────────────── */
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
     @media (max-width: 960px) {
       .hdr { padding: 0 28px; }
-      .article, .chapter, .interlude, .pull { padding-left: 28px; padding-right: 28px; }
-      .article  { grid-template-columns: 1fr; gap: 48px 0; }
-      .chapter  { grid-template-columns: 1fr; gap: 16px 0; }
-      .interlude{ grid-template-columns: 1fr; gap: 20px 0; }
-      .chapter__num { padding-top: 0; }
+      .article, .interlude, .pull { padding-left: 28px; padding-right: 28px; }
+      .article   { grid-template-columns: 1fr; gap: 48px 0; }
+      .interlude { grid-template-columns: 1fr; gap: 20px 0; }
+      .banner__text { left: 28px; bottom: 110px; }
+      .divider { margin: 0 28px; }
       footer { padding: 28px; }
       .pair--7-5, .pair--5-7 { grid-template-columns: 1fr 1fr; }
       .framed, .pair, .trio  { padding: 0 3%; }
@@ -435,30 +466,33 @@
       .pair, .pair--even, .trio { grid-template-columns: 1fr; }
       footer { flex-direction: column; gap: 14px; }
       .body-text p:first-child::first-letter { font-size: 3.6em; }
+      .banner { height: 80vh; }
+      .stripe-panel { margin-top: -60px; padding-top: 56px; }
     }
 
   </style>
 </head>
 <body>
 
-  <!-- HEADER ──────────────────────────────── -->
+  <!-- HEADER ──────────────────────────────────────────── -->
   <header class="hdr">
     <a href="https://www.breakfast-in-space.com" class="hdr__logo">Breakfast in Space</a>
     <span class="hdr__label">Gallery</span>
   </header>
 
-  <!-- PAGE HERO ───────────────────────────── -->
+  <!-- PAGE HERO ───────────────────────────────────────── -->
   <section class="hero">
     <span class="hero__eye">Breakfast in Space</span>
-    <h1 class="hero__title">Gallery</h1>
+    <div class="hero__mask">
+      <h1 class="hero__title">Gallery</h1>
+    </div>
+    <div class="hero__line"></div>
     <span class="hero__scroll">Scroll</span>
   </section>
 
   <main>
 
-    <!-- ARTICLE INTRO ───────────────────────
-         Meta left / Body text right
-    ─────────────────────────────────────────→ -->
+    <!-- ARTICLE INTRO ─────────────────────────────────── -->
     <div class="article fade">
       <aside class="meta">
         <div class="meta__group">
@@ -467,12 +501,8 @@
         </div>
         <div class="meta__group">
           <span class="meta__label">Platform</span>
-          <span class="meta__val">
-            <a href="https://www.instagram.com" target="_blank">Instagram</a>
-          </span>
-          <span class="meta__val">
-            <a href="https://www.youtube.com" target="_blank">YouTube</a>
-          </span>
+          <span class="meta__val"><a href="https://www.instagram.com" target="_blank">Instagram</a></span>
+          <span class="meta__val"><a href="https://www.youtube.com" target="_blank">YouTube</a></span>
         </div>
         <div class="meta__group">
           <span class="meta__label">Year</span>
@@ -495,289 +525,308 @@
     </div>
 
 
-    <!-- ═══════════════════════════════════════
-         PHOTOGRAPHY
-    ═══════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════════════════
+         COLLECTION I — PHOTOGRAPHY
+    ════════════════════════════════════════════════════ -->
 
-    <div class="chapter fade">
-      <span class="chapter__num">Collection I</span>
-      <h2 class="chapter__title">Photography</h2>
-    </div>
-
-    <!-- Parallax banner -->
     <div class="banner fade-img">
-      <div class="banner__img" data-parallax="0.38">
+      <div class="banner__img" data-parallax="0.35">
         <img src="https://picsum.photos/seed/ph-hero/1600/1000" alt="">
       </div>
-    </div>
-
-    <div class="interlude fade">
-      <span class="interlude__aside">On Photography</span>
-      <div class="interlude__text">
-        <p>A study in light, shadow, and the spaces between. Each frame a moment suspended — brief, still, irreversible. These images don't try to explain themselves. They ask only to be looked at.</p>
-        <p>Shot across locations and years, the photographs are unified not by subject but by a shared quality of attention — a willingness to stay with a thing until something shifts.</p>
+      <div class="banner__text">
+        <span class="banner__num">Collection I</span>
+        <h2 class="banner__title">Photography</h2>
       </div>
     </div>
 
-    <div class="bleed fade-img">
-      <div class="item r-wide"
-           data-src="https://picsum.photos/seed/ph1/1600/700"
-           data-cap="Untitled, 2024">
-        <img src="https://picsum.photos/seed/ph1/1600/700" alt="">
+    <div class="stripe-panel">
+
+      <div class="interlude fade">
+        <span class="interlude__aside">On Photography</span>
+        <div class="interlude__text">
+          <p>A study in light, shadow, and the spaces between. Each frame a moment suspended — brief, still, irreversible. These images don't try to explain themselves. They ask only to be looked at.</p>
+          <p>Shot across locations and years, the photographs are unified not by subject but by a shared quality of attention — a willingness to stay with a thing until something shifts.</p>
+        </div>
       </div>
-    </div>
 
-    <div class="pull fade">
-      <p>"The photograph is not what was photographed, it is something else — a new and reduced version of the visible world."</p>
-    </div>
+      <div class="divider"></div>
 
-    <div class="pair pair--7-5">
-      <div class="item r-port fade-img"
-           data-src="https://picsum.photos/seed/ph2/900/1200"
-           data-cap="Study I">
-        <img src="https://picsum.photos/seed/ph2/900/1200" alt="">
-        <span class="item__cap">Study I</span>
+      <div class="bleed fade-img">
+        <div class="item r-wide"
+             data-src="https://picsum.photos/seed/ph1/1600/700"
+             data-cap="Untitled, 2024">
+          <img src="https://picsum.photos/seed/ph1/1600/700" alt="">
+        </div>
       </div>
-      <div class="item r-port fade-img" data-d="1"
-           data-src="https://picsum.photos/seed/ph3/750/1000"
-           data-cap="Study II">
-        <img src="https://picsum.photos/seed/ph3/750/1000" alt="">
-        <span class="item__cap">Study II</span>
+
+      <div class="pull fade">
+        <p>"The photograph is not what was photographed, it is something else — a new and reduced version of the visible world."</p>
       </div>
-    </div>
 
-    <div class="trio">
-      <div class="item r-sq fade-img"
-           data-src="https://picsum.photos/seed/ph4/700/700"
-           data-cap="Fragment I">
-        <img src="https://picsum.photos/seed/ph4/700/700" alt="">
-        <span class="item__cap">Fragment I</span>
+      <div class="pair pair--7-5">
+        <div class="item r-port fade-img"
+             data-src="https://picsum.photos/seed/ph2/900/1200"
+             data-cap="Study I">
+          <img src="https://picsum.photos/seed/ph2/900/1200" alt="">
+          <span class="item__cap">Study I</span>
+        </div>
+        <div class="item r-port fade-img" data-d="1"
+             data-src="https://picsum.photos/seed/ph3/750/1000"
+             data-cap="Study II">
+          <img src="https://picsum.photos/seed/ph3/750/1000" alt="">
+          <span class="item__cap">Study II</span>
+        </div>
       </div>
-      <div class="item r-sq fade-img" data-d="1"
-           data-src="https://picsum.photos/seed/ph5/700/700"
-           data-cap="Fragment II">
-        <img src="https://picsum.photos/seed/ph5/700/700" alt="">
-        <span class="item__cap">Fragment II</span>
+
+      <div class="trio">
+        <div class="item r-sq fade-img"
+             data-src="https://picsum.photos/seed/ph4/700/700"
+             data-cap="Fragment I">
+          <img src="https://picsum.photos/seed/ph4/700/700" alt="">
+          <span class="item__cap">Fragment I</span>
+        </div>
+        <div class="item r-sq fade-img" data-d="1"
+             data-src="https://picsum.photos/seed/ph5/700/700"
+             data-cap="Fragment II">
+          <img src="https://picsum.photos/seed/ph5/700/700" alt="">
+          <span class="item__cap">Fragment II</span>
+        </div>
+        <div class="item r-sq fade-img" data-d="2"
+             data-src="https://picsum.photos/seed/ph6/700/700"
+             data-cap="Fragment III">
+          <img src="https://picsum.photos/seed/ph6/700/700" alt="">
+          <span class="item__cap">Fragment III</span>
+        </div>
       </div>
-      <div class="item r-sq fade-img" data-d="2"
-           data-src="https://picsum.photos/seed/ph6/700/700"
-           data-cap="Fragment III">
-        <img src="https://picsum.photos/seed/ph6/700/700" alt="">
-        <span class="item__cap">Fragment III</span>
-      </div>
-    </div>
 
-    <div class="col-end"></div>
+      <div class="col-end"></div>
+
+    </div><!-- /.stripe-panel -->
 
 
-    <!-- ═══════════════════════════════════════
-         MUSIC
-    ═══════════════════════════════════════════ -->
-
-    <div class="chapter fade">
-      <span class="chapter__num">Collection II</span>
-      <h2 class="chapter__title">Music</h2>
-    </div>
+    <!-- ═══════════════════════════════════════════════════
+         COLLECTION II — MUSIC
+    ════════════════════════════════════════════════════ -->
 
     <div class="banner fade-img">
-      <div class="banner__img" data-parallax="0.38">
+      <div class="banner__img" data-parallax="0.35">
         <img src="https://picsum.photos/seed/mu-hero/1600/1000" alt="">
       </div>
-    </div>
-
-    <div class="interlude fade">
-      <span class="interlude__aside">On Music</span>
-      <div class="interlude__text">
-        <p>Sound made visible. The architecture of rhythm and resonance, captured in still form. These images document the conditions under which music is made — the rooms, the equipment, the particular quality of light at certain hours.</p>
-        <p>The studio as a place: not a neutral space but one that shapes what gets made inside it. What you hear in the music begins, in some way, here.</p>
+      <div class="banner__text">
+        <span class="banner__num">Collection II</span>
+        <h2 class="banner__title">Music</h2>
       </div>
     </div>
 
-    <div class="pair pair--even">
-      <div class="item r-sq fade-img"
-           data-src="https://picsum.photos/seed/mu1/900/900"
-           data-cap="Release I">
-        <img src="https://picsum.photos/seed/mu1/900/900" alt="">
-        <span class="item__cap">Release I</span>
+    <div class="stripe-panel">
+
+      <div class="interlude fade">
+        <span class="interlude__aside">On Music</span>
+        <div class="interlude__text">
+          <p>Sound made visible. The architecture of rhythm and resonance, captured in still form. These images document the conditions under which music is made — the rooms, the equipment, the particular quality of light at certain hours.</p>
+          <p>The studio as a place: not a neutral space but one that shapes what gets made inside it. What you hear in the music begins, in some way, here.</p>
+        </div>
       </div>
-      <div class="item r-sq fade-img" data-d="1"
-           data-src="https://picsum.photos/seed/mu2/900/900"
-           data-cap="Release II">
-        <img src="https://picsum.photos/seed/mu2/900/900" alt="">
-        <span class="item__cap">Release II</span>
+
+      <div class="divider"></div>
+
+      <div class="pair pair--even">
+        <div class="item r-sq fade-img"
+             data-src="https://picsum.photos/seed/mu1/900/900"
+             data-cap="Release I">
+          <img src="https://picsum.photos/seed/mu1/900/900" alt="">
+          <span class="item__cap">Release I</span>
+        </div>
+        <div class="item r-sq fade-img" data-d="1"
+             data-src="https://picsum.photos/seed/mu2/900/900"
+             data-cap="Release II">
+          <img src="https://picsum.photos/seed/mu2/900/900" alt="">
+          <span class="item__cap">Release II</span>
+        </div>
       </div>
-    </div>
 
-    <div class="framed fade-img">
-      <div class="item r-cin"
-           data-src="https://picsum.photos/seed/mu3/1600/690"
-           data-cap="Live, 2024">
-        <img src="https://picsum.photos/seed/mu3/1600/690" alt="">
-        <span class="item__cap">Live, 2024</span>
+      <div class="framed fade-img">
+        <div class="item r-cin"
+             data-src="https://picsum.photos/seed/mu3/1600/690"
+             data-cap="Live, 2024">
+          <img src="https://picsum.photos/seed/mu3/1600/690" alt="">
+          <span class="item__cap">Live, 2024</span>
+        </div>
       </div>
-    </div>
 
-    <div class="pull fade">
-      <p>"Recorded in solitude. The room as instrument — silence as score."</p>
-    </div>
-
-    <div class="pair pair--5-7">
-      <div class="item r-port fade-img"
-           data-src="https://picsum.photos/seed/mu4/700/930"
-           data-cap="Session I">
-        <img src="https://picsum.photos/seed/mu4/700/930" alt="">
-        <span class="item__cap">Session I</span>
+      <div class="pull fade">
+        <p>"Recorded in solitude. The room as instrument — silence as score."</p>
       </div>
-      <div class="item r-land fade-img" data-d="1"
-           data-src="https://picsum.photos/seed/mu5/1000/625"
-           data-cap="Session II">
-        <img src="https://picsum.photos/seed/mu5/1000/625" alt="">
-        <span class="item__cap">Session II</span>
+
+      <div class="pair pair--5-7">
+        <div class="item r-port fade-img"
+             data-src="https://picsum.photos/seed/mu4/700/930"
+             data-cap="Session I">
+          <img src="https://picsum.photos/seed/mu4/700/930" alt="">
+          <span class="item__cap">Session I</span>
+        </div>
+        <div class="item r-land fade-img" data-d="1"
+             data-src="https://picsum.photos/seed/mu5/1000/625"
+             data-cap="Session II">
+          <img src="https://picsum.photos/seed/mu5/1000/625" alt="">
+          <span class="item__cap">Session II</span>
+        </div>
       </div>
-    </div>
 
-    <div class="col-end"></div>
+      <div class="col-end"></div>
+
+    </div><!-- /.stripe-panel -->
 
 
-    <!-- ═══════════════════════════════════════
-         VISUAL ART
-    ═══════════════════════════════════════════ -->
-
-    <div class="chapter fade">
-      <span class="chapter__num">Collection III</span>
-      <h2 class="chapter__title">Visual Art</h2>
-    </div>
+    <!-- ═══════════════════════════════════════════════════
+         COLLECTION III — VISUAL ART
+    ════════════════════════════════════════════════════ -->
 
     <div class="banner fade-img">
-      <div class="banner__img" data-parallax="0.38">
+      <div class="banner__img" data-parallax="0.35">
         <img src="https://picsum.photos/seed/va-hero/1600/1000" alt="">
       </div>
-    </div>
-
-    <div class="interlude fade">
-      <span class="interlude__aside">On Visual Art</span>
-      <div class="interlude__text">
-        <p>Form, texture, the language of gesture. Work that asks to be looked at slowly — resisting the speed of everything else. These pieces don't illustrate ideas so much as embody them: in their material, their scale, their resistance to easy reading.</p>
-        <p>Each piece begins with a question. The work ends when the question dissolves into something quieter — not an answer, but a different kind of attention.</p>
+      <div class="banner__text">
+        <span class="banner__num">Collection III</span>
+        <h2 class="banner__title">Visual Art</h2>
       </div>
     </div>
 
-    <div class="pair pair--even">
-      <div class="item r-tall fade-img"
-           data-src="https://picsum.photos/seed/va1/700/1050"
-           data-cap="Composition I">
-        <img src="https://picsum.photos/seed/va1/700/1050" alt="">
-        <span class="item__cap">Composition I</span>
-      </div>
-      <div class="item r-land fade-img" data-d="1"
-           data-src="https://picsum.photos/seed/va2/1200/750"
-           data-cap="Composition II">
-        <img src="https://picsum.photos/seed/va2/1200/750" alt="">
-        <span class="item__cap">Composition II</span>
-      </div>
-    </div>
+    <div class="stripe-panel">
 
-    <div class="bleed fade-img">
-      <div class="item r-cin"
-           data-src="https://picsum.photos/seed/va6/1600/690"
-           data-cap="Panorama">
-        <img src="https://picsum.photos/seed/va6/1600/690" alt="">
+      <div class="interlude fade">
+        <span class="interlude__aside">On Visual Art</span>
+        <div class="interlude__text">
+          <p>Form, texture, the language of gesture. Work that asks to be looked at slowly — resisting the speed of everything else. These pieces don't illustrate ideas so much as embody them: in their material, their scale, their resistance to easy reading.</p>
+          <p>Each piece begins with a question. The work ends when the question dissolves into something quieter — not an answer, but a different kind of attention.</p>
+        </div>
       </div>
-    </div>
 
-    <div class="trio">
-      <div class="item r-sq fade-img"
-           data-src="https://picsum.photos/seed/va3/700/700"
-           data-cap="Study III">
-        <img src="https://picsum.photos/seed/va3/700/700" alt="">
-        <span class="item__cap">Study III</span>
+      <div class="divider"></div>
+
+      <div class="pair pair--even">
+        <div class="item r-tall fade-img"
+             data-src="https://picsum.photos/seed/va1/700/1050"
+             data-cap="Composition I">
+          <img src="https://picsum.photos/seed/va1/700/1050" alt="">
+          <span class="item__cap">Composition I</span>
+        </div>
+        <div class="item r-land fade-img" data-d="1"
+             data-src="https://picsum.photos/seed/va2/1200/750"
+             data-cap="Composition II">
+          <img src="https://picsum.photos/seed/va2/1200/750" alt="">
+          <span class="item__cap">Composition II</span>
+        </div>
       </div>
-      <div class="item r-sq fade-img" data-d="1"
-           data-src="https://picsum.photos/seed/va4/700/700"
-           data-cap="Study IV">
-        <img src="https://picsum.photos/seed/va4/700/700" alt="">
-        <span class="item__cap">Study IV</span>
+
+      <div class="bleed fade-img">
+        <div class="item r-cin"
+             data-src="https://picsum.photos/seed/va6/1600/690"
+             data-cap="Panorama">
+          <img src="https://picsum.photos/seed/va6/1600/690" alt="">
+        </div>
       </div>
-      <div class="item r-sq fade-img" data-d="2"
-           data-src="https://picsum.photos/seed/va5/700/700"
-           data-cap="Study V">
-        <img src="https://picsum.photos/seed/va5/700/700" alt="">
-        <span class="item__cap">Study V</span>
+
+      <div class="trio">
+        <div class="item r-sq fade-img"
+             data-src="https://picsum.photos/seed/va3/700/700"
+             data-cap="Study III">
+          <img src="https://picsum.photos/seed/va3/700/700" alt="">
+          <span class="item__cap">Study III</span>
+        </div>
+        <div class="item r-sq fade-img" data-d="1"
+             data-src="https://picsum.photos/seed/va4/700/700"
+             data-cap="Study IV">
+          <img src="https://picsum.photos/seed/va4/700/700" alt="">
+          <span class="item__cap">Study IV</span>
+        </div>
+        <div class="item r-sq fade-img" data-d="2"
+             data-src="https://picsum.photos/seed/va5/700/700"
+             data-cap="Study V">
+          <img src="https://picsum.photos/seed/va5/700/700" alt="">
+          <span class="item__cap">Study V</span>
+        </div>
       </div>
-    </div>
 
-    <div class="col-end"></div>
+      <div class="col-end"></div>
+
+    </div><!-- /.stripe-panel -->
 
 
-    <!-- ═══════════════════════════════════════
-         PRODUCTION
-    ═══════════════════════════════════════════ -->
-
-    <div class="chapter fade">
-      <span class="chapter__num">Collection IV</span>
-      <h2 class="chapter__title">Production</h2>
-    </div>
+    <!-- ═══════════════════════════════════════════════════
+         COLLECTION IV — PRODUCTION
+    ════════════════════════════════════════════════════ -->
 
     <div class="banner fade-img">
-      <div class="banner__img" data-parallax="0.38">
+      <div class="banner__img" data-parallax="0.35">
         <img src="https://picsum.photos/seed/pr-hero/1600/1000" alt="">
       </div>
-    </div>
-
-    <div class="interlude fade">
-      <span class="interlude__aside">On Production</span>
-      <div class="interlude__text">
-        <p>Behind the work, the work. Process as practice — the studio as a living document of becoming. These images record the conditions of making: the tools, the surfaces, the half-finished states that rarely survive into the final work.</p>
-        <p>The gap between intention and execution is where the real work lives. This is an attempt to make that gap visible.</p>
+      <div class="banner__text">
+        <span class="banner__num">Collection IV</span>
+        <h2 class="banner__title">Production</h2>
       </div>
     </div>
 
-    <div class="framed fade-img">
-      <div class="item r-land"
-           data-src="https://picsum.photos/seed/pr1/1600/1000"
-           data-cap="Studio, 2024">
-        <img src="https://picsum.photos/seed/pr1/1600/1000" alt="">
-        <span class="item__cap">Studio, 2024</span>
-      </div>
-    </div>
+    <div class="stripe-panel">
 
-    <div class="pair pair--7-5">
-      <div class="item r-land fade-img"
-           data-src="https://picsum.photos/seed/pr2/1100/688"
-           data-cap="Process I">
-        <img src="https://picsum.photos/seed/pr2/1100/688" alt="">
-        <span class="item__cap">Process I</span>
+      <div class="interlude fade">
+        <span class="interlude__aside">On Production</span>
+        <div class="interlude__text">
+          <p>Behind the work, the work. Process as practice — the studio as a living document of becoming. These images record the conditions of making: the tools, the surfaces, the half-finished states that rarely survive into the final work.</p>
+          <p>The gap between intention and execution is where the real work lives. This is an attempt to make that gap visible.</p>
+        </div>
       </div>
-      <div class="item r-land fade-img" data-d="1"
-           data-src="https://picsum.photos/seed/pr3/700/438"
-           data-cap="Process II">
-        <img src="https://picsum.photos/seed/pr3/700/438" alt="">
-        <span class="item__cap">Process II</span>
-      </div>
-    </div>
 
-    <div class="trio">
-      <div class="item r-sq fade-img"
-           data-src="https://picsum.photos/seed/pr4/700/700"
-           data-cap="Detail I">
-        <img src="https://picsum.photos/seed/pr4/700/700" alt="">
-        <span class="item__cap">Detail I</span>
-      </div>
-      <div class="item r-sq fade-img" data-d="1"
-           data-src="https://picsum.photos/seed/pr5/700/700"
-           data-cap="Detail II">
-        <img src="https://picsum.photos/seed/pr5/700/700" alt="">
-        <span class="item__cap">Detail II</span>
-      </div>
-      <div class="item r-sq fade-img" data-d="2"
-           data-src="https://picsum.photos/seed/pr6/700/700"
-           data-cap="Detail III">
-        <img src="https://picsum.photos/seed/pr6/700/700" alt="">
-        <span class="item__cap">Detail III</span>
-      </div>
-    </div>
+      <div class="divider"></div>
 
-    <div class="col-end"></div>
+      <div class="framed fade-img">
+        <div class="item r-land"
+             data-src="https://picsum.photos/seed/pr1/1600/1000"
+             data-cap="Studio, 2024">
+          <img src="https://picsum.photos/seed/pr1/1600/1000" alt="">
+          <span class="item__cap">Studio, 2024</span>
+        </div>
+      </div>
+
+      <div class="pair pair--7-5">
+        <div class="item r-land fade-img"
+             data-src="https://picsum.photos/seed/pr2/1100/688"
+             data-cap="Process I">
+          <img src="https://picsum.photos/seed/pr2/1100/688" alt="">
+          <span class="item__cap">Process I</span>
+        </div>
+        <div class="item r-land fade-img" data-d="1"
+             data-src="https://picsum.photos/seed/pr3/700/438"
+             data-cap="Process II">
+          <img src="https://picsum.photos/seed/pr3/700/438" alt="">
+          <span class="item__cap">Process II</span>
+        </div>
+      </div>
+
+      <div class="trio">
+        <div class="item r-sq fade-img"
+             data-src="https://picsum.photos/seed/pr4/700/700"
+             data-cap="Detail I">
+          <img src="https://picsum.photos/seed/pr4/700/700" alt="">
+          <span class="item__cap">Detail I</span>
+        </div>
+        <div class="item r-sq fade-img" data-d="1"
+             data-src="https://picsum.photos/seed/pr5/700/700"
+             data-cap="Detail II">
+          <img src="https://picsum.photos/seed/pr5/700/700" alt="">
+          <span class="item__cap">Detail II</span>
+        </div>
+        <div class="item r-sq fade-img" data-d="2"
+             data-src="https://picsum.photos/seed/pr6/700/700"
+             data-cap="Detail III">
+          <img src="https://picsum.photos/seed/pr6/700/700" alt="">
+          <span class="item__cap">Detail III</span>
+        </div>
+      </div>
+
+      <div class="col-end"></div>
+
+    </div><!-- /.stripe-panel -->
 
   </main>
 
@@ -786,7 +835,7 @@
     <span class="ftr__copy">© Breakfast in Space</span>
   </footer>
 
-  <!-- LIGHTBOX ─────────────────────────────── -->
+  <!-- LIGHTBOX ────────────────────────────────────────── -->
   <div class="lb" id="lb">
     <div class="lb__top">
       <span class="lb__cap" id="lbCap"></span>
@@ -801,7 +850,7 @@
 
   <script>
 
-    // ── PARALLAX ───────────────────────────────────
+    // ── PARALLAX ───────────────────────────────────────────
     const prlxEls = document.querySelectorAll('[data-parallax]');
 
     function onParallax() {
@@ -817,7 +866,7 @@
     window.addEventListener('scroll', onParallax, { passive: true });
     onParallax();
 
-    // ── SCROLL REVEAL ──────────────────────────────
+    // ── SCROLL REVEAL ──────────────────────────────────────
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
@@ -829,7 +878,7 @@
 
     document.querySelectorAll('.fade, .fade-img').forEach(el => io.observe(el));
 
-    // ── LIGHTBOX ───────────────────────────────────
+    // ── LIGHTBOX ───────────────────────────────────────────
     const lb    = document.getElementById('lb');
     const lbImg = document.getElementById('lbImg');
     const lbCap = document.getElementById('lbCap');
