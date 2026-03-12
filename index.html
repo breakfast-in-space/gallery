@@ -298,9 +298,11 @@
       background: #d5d1cc;
     }
     .item img {
-      width: 100%; height: 100%;
+      width: 100%; height: 112%;
+      margin-top: -6%;
       object-fit: cover;
       display: block;
+      will-change: transform;
       transition: scale 0.9s var(--ease), filter 0.7s var(--ease);
     }
     .item:hover img { scale: 1.04; filter: brightness(0.88); }
@@ -1160,6 +1162,33 @@
       const rect = playerBar.getBoundingClientRect();
       audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
     });
+
+    // ── SOFT PARALLAX ─────────────────────────────────────
+    (function(){
+      const pxImgs  = Array.from(document.querySelectorAll('.item img'));
+      const pxTexts = Array.from(document.querySelectorAll('.ed-text, .pull'));
+      let ticking = false;
+
+      function run() {
+        const vh = window.innerHeight;
+        pxImgs.forEach(img => {
+          const r = img.closest('.item').getBoundingClientRect();
+          if (r.bottom < 0 || r.top > vh) return;
+          img.style.transform = `translateY(${(r.top + r.height / 2 - vh / 2) * -0.07}px)`;
+        });
+        pxTexts.forEach(el => {
+          const r = el.getBoundingClientRect();
+          if (r.bottom < 0 || r.top > vh) return;
+          el.style.transform = `translateY(${(r.top + r.height / 2 - vh / 2) * -0.04}px)`;
+        });
+        ticking = false;
+      }
+
+      window.addEventListener('scroll', () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(run); }
+      }, { passive: true });
+      run();
+    })();
 
   </script>
 </body>
